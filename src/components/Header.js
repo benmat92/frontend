@@ -1,13 +1,14 @@
 
-import React from 'react';
+import React, { useState }  from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -23,6 +24,15 @@ const useStyles = makeStyles((theme) => ({
 
 function Header() {
 	const classes = useStyles();
+	let navigate = useNavigate();
+	const [data, setData] = useState({ search: '' });
+	const goSearch = (e) => {
+		navigate({
+			pathname: '/search/',
+			search: '?search=' + data.search,
+		});
+		window.location.reload();
+	};
 	return (
 		<React.Fragment>
 			<CssBaseline />
@@ -48,6 +58,7 @@ function Header() {
 							Deals
 						</Link>
 					</Typography>
+
 					<nav>
 						<Link
 							color="textPrimary"

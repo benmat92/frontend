@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Deals from './components/Deals';
-import DealLoadingComponent from './components/DealLoading';
+import Deals from './components/deals/Deals';
+import DealLoadingComponent from './components/deals/DealLoading';
 import axiosInstance from './axios';
 
 /*
@@ -56,6 +56,7 @@ function App() {
 
 		});
 	}, [setAppState]);
+	
 	if (error || !Array.isArray(appState.deals)) {
 		return <p>There was an error loading your data!</p>;
 	}
