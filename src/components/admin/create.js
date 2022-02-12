@@ -81,12 +81,13 @@ export default function Create() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axiosInstance
-			.post('/admin/create/', {
+			.post('/apiadmin/create/', {
 				title: formData.title,
 				slug: formData.slug,
 				author: "http://127.0.0.1:8000/accounts/users/1/",
 				brand: 'ljasndfljs',
 				summary: formData.summary,
+				date_posted:"2022-02-09T14:54:39.022423Z",
 				url: 'chevk.com',
 				price:444,
 				store:'ihaslnfldasf',

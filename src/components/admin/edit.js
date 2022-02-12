@@ -32,20 +32,19 @@ export default function Create() {
 	const initialFormData = Object.freeze({
 		id: '',
 		title: '',
-		slug: '',
-		excerpt: '',
 		summary: '',
+		date_posted:'',
 	});
 
 	const [formData, updateFormData] = useState(initialFormData);
 
 	useEffect(() => {
-		axiosInstance.get('/admin/edit/dealdetail/' + id).then((res) => {
+		axiosInstance.get('/apiadmin/edit/dealdetail/' + id).then((res) => {
 			updateFormData({
 				...formData,
 				['title']: res.data.title,
-				['slug']: res.data.slug,
 				['summary']: res.data.summary,
+				['date_posted']: res.data.date_posted,
 			});
 			console.log(res.data);
 		});
@@ -63,16 +62,22 @@ export default function Create() {
 		e.preventDefault();
 		console.log(formData);
 
-		axiosInstance.put(`admin/edit/` + id + '/', {
+		axiosInstance.put(`apiadmin/edit/` + id + '/', {
 			title: formData.title,
-			slug: formData.slug,
-			author: 1,
+			slug: 'okay',
+			author: "http://127.0.0.1:8000/accounts/users/1/",
+			brand: 'ljasndfljs',
 			summary: formData.summary,
+			id: id,
+			url: 'chevk.com',
+			price:444,
+			store:'ihaslnfldasf',
+			date_posted:formData.date_posted,
+			category:['http://127.0.0.1:8000/category/8/'],
 		});
 		navigate({
 			pathname: '/admin/',
 		});
-		window.location.reload();
 	};
 
 	const classes = useStyles();
@@ -104,19 +109,6 @@ export default function Create() {
 								variant="outlined"
 								required
 								fullWidth
-								id="slug"
-								label="slug"
-								name="slug"
-								autoComplete="slug"
-								value={formData.slug}
-								onChange={handleChange}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
 								id="summary"
 								label="summary"
 								name="summary"
@@ -125,6 +117,19 @@ export default function Create() {
 								onChange={handleChange}
 								multiline
 								rows={8}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								variant="outlined"
+								required
+								fullWidth
+								id="date_posted"
+								label="date_posted"
+								name="date_posted"
+								autoComplete="date_posted"
+								value={formData.date_posted}
+								onChange={handleChange}
 							/>
 						</Grid>
 					</Grid>
