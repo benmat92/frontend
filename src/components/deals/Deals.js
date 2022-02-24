@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +7,16 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import IconButton from '@material-ui/core/IconButton';
+import CardActions from '@material-ui/core/CardActions';
+import ShareIcon from '@material-ui/icons/Share';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -34,10 +44,20 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(2),
 	},
 }));
-
 const Deals = (props) => {
 	const { deals } = props;
 	const classes = useStyles();
+	console.log(props);
+	const [count, setCount] = useState(0);
+	const [liked, setLiked] = useState(0);
+	const toggle = () => {
+			let localLiked = this.state.liked;
+
+			// Toggle the state variable liked
+			localLiked = !localLiked;
+			this.setState({ liked: localLiked });
+		};
+
 	if (!deals || !deals.length === 0) return <p>Can not find any deals, sorry</p>;
 		console.log(deals);
 		return (
@@ -49,6 +69,20 @@ const Deals = (props) => {
 								// Enterprise card is full width at sm breakpoint
 								<Grid item key={deal.id} xs={12} md={4}>
 									<Card className={classes.card}>
+									<CardHeader
+											avatar={
+												<Avatar aria-label="recipe" className={classes.avatar}>
+													R
+												</Avatar>
+											}
+											title="Title"
+											subheader="User"
+										/>
+										<CardMedia
+											className={classes.media}
+											image="/static/images/cards/paella.jpg"
+											title="Paella dish"
+										/>
 										<Link
 											color="textPrimary"
 											href={'deal/' + deal.id}
@@ -56,7 +90,7 @@ const Deals = (props) => {
 										>
 											<CardMedia
 												className={classes.cardMedia}
-												image="https://source.unsplash.com/random"
+												image={deal.header_image}
 												title="Image title"
 											/>
 										</Link>
@@ -79,6 +113,24 @@ const Deals = (props) => {
 												</Typography>
 											</div>
 										</CardContent>
+										<CardActions disableSpacing>
+											<IconButton aria-label="add to favorites" onClick={() => setLiked(!liked)}
+											>
+											{liked === false? (
+												deal.like_count+1
+											 ) : (
+												deal.like_count
+											 )}
+											{liked === false ? (
+												<FavoriteBorder color="primary"/>
+											 ) : (
+												 <FavoriteBorder/>
+											 )}
+											</IconButton>
+											<IconButton aria-label="share">
+												<ShareIcon />
+											</IconButton>
+										</CardActions>
 									</Card>
 								</Grid>
 							);

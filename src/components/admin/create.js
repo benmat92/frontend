@@ -59,25 +59,53 @@ export default function Create() {
 		summary: '',
 	});
 
-	const [formData, updateFormData] = useState(initialFormData);
+	const [dealData, updateFormData] = useState(initialFormData);
+	const [dealheader_image, setFormheader_image] = useState(null);
 
 	const handleChange = (e) => {
+		if ([e.target.name] == 'header_image') {
+			setFormheader_image({
+				header_image: e.target.files,
+			});
+			console.log(e.target.files);
+		}
 		if ([e.target.name] == 'title') {
 			updateFormData({
-				...formData,
+				...dealData,
 				// Trimming any whitespace
 				[e.target.name]: e.target.value.trim(),
 				['slug']: slugify(e.target.value.trim()),
 			});
 		} else {
 			updateFormData({
-				...formData,
+				...dealData,
 				// Trimming any whitespace
 				[e.target.name]: e.target.value.trim(),
 			});
 		}
 	};
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		let formData = new FormData();
+		formData.append('title', dealData.title);
+		formData.append('slug', dealData.slug);
+		formData.append('author', "http://127.0.0.1:8000/accounts/users/1/");
+		formData.append('summary', dealData.summary);
+		formData.append('url', 'chevk.com');
+		formData.append('date_posted', "2022-02-09T14:54:39.022423Z");
+		formData.append('price', 444);
+		formData.append('store', 'ihaslnfldasf');
+		formData.append('brand', 'ihaslnfldasf');
+		formData.append('category', ['http://127.0.0.1:8000/category/8/']);
+		formData.append('header_image', dealheader_image.header_image[0]);
+		axiosInstance.post(`apiadmin/create/`, formData);
+		navigate({
+			pathname: '/',
+		});
+	};
+
+	/*
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axiosInstance
@@ -97,7 +125,7 @@ export default function Create() {
 				navigate('/');
 			});
 	};
-
+*/
 	const classes = useStyles();
 
 	return (
@@ -106,7 +134,7 @@ export default function Create() {
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}></Avatar>
 				<Typography component="h1" variant="h5">
-					Create New Post
+					Create New Deal
 				</Typography>
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
@@ -131,7 +159,7 @@ export default function Create() {
 								label="slug"
 								name="slug"
 								autoComplete="slug"
-								value={formData.slug}
+								value={dealData.slug}
 								onChange={handleChange}
 							/>
 						</Grid>
@@ -149,6 +177,14 @@ export default function Create() {
 								rows={4}
 							/>
 						</Grid>
+						<input
+							accept="image/*"
+							className={classes.input}
+							id="deal-header_image"
+							onChange={handleChange}
+							name="header_image"
+							type="file"
+						/>
 					</Grid>
 					<Button
 						type="submit"
@@ -158,7 +194,7 @@ export default function Create() {
 						className={classes.submit}
 						onClick={handleSubmit}
 					>
-						Create Post
+						Create Deal
 					</Button>
 				</form>
 			</div>

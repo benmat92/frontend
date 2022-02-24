@@ -3,14 +3,16 @@ import './App.css';
 import Deals from './components/deals/Deals';
 import DealLoadingComponent from './components/deals/DealLoading';
 import axiosInstance from './axios';
+import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 
-function Admin() {
-	const DealLoading = DealLoadingComponent(Deals);
+
+const Front = () => {
+	const DealLoading = Deals;
 	const [data, setData] = useState([]);
 	const [appState, setAppState] = useState({
 		loading: true,
-		deals: null,
-	});
+		deals: 'null',
+});
 
 	const [error, setError] = useState();
 
@@ -19,18 +21,18 @@ function Admin() {
 			const allDeals = res.data;
 			setAppState({ loading: false, deals: allDeals });
 			console.log(res.data);
+
 		});
 	}, [setAppState]);
 
 	if (error || !Array.isArray(appState.deals)) {
-		return <p>There was an error loading your data!</p>;
+		return <p></p>;
 	}
-
 	return (
 		<div className="App">
-			<h1>Latest Deals</h1>
+      <h1>Latest Posts</h1>
 			<DealLoading isLoading={appState.loading} deals={appState.deals} />
 		</div>
 	);
 }
-export default Admin;
+export default Front;

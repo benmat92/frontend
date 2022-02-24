@@ -22,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Header() {
+function Header(props) {
 	const classes = useStyles();
 	let navigate = useNavigate();
+	console.log(props);
 	const [data, setData] = useState({ search: '' });
 	const goSearch = (e) => {
 		navigate({
@@ -60,36 +61,44 @@ function Header() {
 					</Typography>
 
 					<nav>
-						<Link
-							color="textPrimary"
-							href="#"
-							className={classes.link}
-							component={NavLink}
-							to="/register"
-						>
-							Register
-						</Link>
+						{props.isLoggedIn ? (
+							<nav>
+								<Button
+									href="#"
+									color="primary"
+									variant="outlined"
+									className={classes.link}
+									component={NavLink}
+									to="/logout"
+								>
+									Logout
+								</Button>
+							</nav>
+							) : (
+								<nav>
+								<Button
+									href="#"
+									color="primary"
+									variant="outlined"
+									className={classes.link}
+									component={NavLink}
+									to="/login"
+								>
+									Login
+								</Button>
+								<Button
+									color="primary"
+									href="#"
+									className={classes.link}
+									component={NavLink}
+									to="/register"
+									variant="outlined"
+								>
+									Register
+								</Button>
+								</nav>
+						)}
 					</nav>
-					<Button
-						href="#"
-						color="primary"
-						variant="outlined"
-						className={classes.link}
-						component={NavLink}
-						to="/login"
-					>
-						Login
-					</Button>
-					<Button
-						href="#"
-						color="primary"
-						variant="outlined"
-						className={classes.link}
-						component={NavLink}
-						to="/logout"
-					>
-						Logout
-					</Button>
 				</Toolbar>
 			</AppBar>
 		</React.Fragment>
