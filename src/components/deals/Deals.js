@@ -44,20 +44,66 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(2),
 	},
 }));
+
+
 const Deals = (props) => {
 	const { deals } = props;
 	const classes = useStyles();
 	console.log(props);
+	console.log(deals);
+
+
 	const [count, setCount] = useState(0);
-	const [liked, setLiked] = useState(0);
-	const toggle = () => {
-			let localLiked = this.state.liked;
+	var user = localStorage.getItem("user");
+	const [liked, setLiked] = useState(false);
+	const [favorite, setFavorite] = useState(props.favBool);
+	const toggleFavorite = (dealID, data = {}) => {
+			// const clickedRecipe = target.value; //don't need target as argument either??
 
-			// Toggle the state variable liked
-			localLiked = !localLiked;
-			this.setState({ liked: localLiked });
-		};
+			// this sets the state for my selected recipes (adds/ removes)			const [liked, setLiked] = useState(false);
 
+
+		setFavorite((dealId) => {
+			if (favorite == true) {
+				console.log("I clicked unliked")
+				console.log(props)
+				fetch(`http://127.0.0.1:8000/api/like/${dealID}/`, {
+				    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				    mode: 'cors', // no-cors, *cors, same-origin
+				    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+				    credentials: 'same-origin', // include, *same-origin, omit
+				    headers: {
+				      'Content-Type': 'application/json'
+				      // 'Content-Type': 'application/x-www-form-urlencoded',
+				    },
+				    redirect: 'follow', // manual, *follow, error
+				    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+				    body: JSON.stringify(data) // body data type must match "Content-Type" header
+				  })
+				.then(console.log("This was a favorited recipe, but now it isnt!"));
+
+			}
+			if (favorite == false) {
+				console.log("I clicked favorite")
+				fetch(`http://127.0.0.1:8000/api/like/${dealID}/`, {
+				    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				    mode: 'cors', // no-cors, *cors, same-origin
+				    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+				    credentials: 'same-origin', // include, *same-origin, omit
+				    headers: {
+				      'Content-Type': 'application/json'
+				      // 'Content-Type': 'application/x-www-form-urlencoded',
+				    },
+				    redirect: 'follow', // manual, *follow, error
+				    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+				    body: JSON.stringify(data) // body data type must match "Content-Type" header
+				  })
+				.then(console.log("This was not a favorited recipe. Now it is!"));
+			}
+			return !favorite;
+		});
+		console.log(props.deals.id);
+	}
 	if (!deals || !deals.length === 0) return <p>Can not find any deals, sorry</p>;
 		console.log(deals);
 		return (
@@ -114,14 +160,19 @@ const Deals = (props) => {
 											</div>
 										</CardContent>
 										<CardActions disableSpacing>
-											<IconButton aria-label="add to favorites" onClick={() => setLiked(!liked)}
+											<IconButton aria-label="add to favorites" onClick={() => toggleFavorite(deal.id,{
+											          pk: deal.id,
+											          postid: deal.id,
+											          action: 'post',
+																user: user
+											        })}
 											>
 											{liked === false? (
 												deal.like_count+1
 											 ) : (
 												deal.like_count
 											 )}
-											{liked === false ? (
+											{liked === false? (
 												<FavoriteBorder color="primary"/>
 											 ) : (
 												 <FavoriteBorder/>

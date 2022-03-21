@@ -65,9 +65,10 @@ export default function SignIn() {
 					'VsDJA0Be6ojJQK0uR37gMfNqoUD632IaDVKuXhNWKYS1VMCP4vBMSj9zgjRWGt31ZTfodps7qjIZLWIExioqzz1XDs2AcMOTSVRYA2iXwGOc7KGKyFvrhZbBA4xrB07H',
 			})
 			.then((res) => {
-				console.log(res);
+				console.log(formData.email);
 				localStorage.setItem('access_token', res.data.access_token);
 				localStorage.setItem('refresh_token', res.data.refresh_token);
+				localStorage.setItem('user', formData.email);
 				navigate('/');
 				window.location.reload();
 				//console.log(res);
